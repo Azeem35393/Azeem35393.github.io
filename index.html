@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azeem | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0b0c10;
+    --surface: #13141a;
+    --surface2: #1c1d26;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0ede8;
+    --muted: #8a8897;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --accent5: #c77dff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 5%;
+    background: rgba(11,12,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent1); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  section { padding: 6rem 5%; max-width: 1100px; margin: 0 auto; }
+
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 8rem;
+    position: relative;
+    max-width: 100%;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; padding: 0 5%; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    border: 1px solid rgba(107,203,119,0.3);
+    border-radius: 100px;
+    padding: 0.3rem 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    margin-bottom: 0.4rem;
+  }
+  .hero-name .line2 { color: var(--accent4); }
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 1.5rem 0 2.5rem;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 0.75rem 1.8rem;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.22s;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--accent1); color: #fff; border: none; }
+  .btn-primary:hover { transform: translateY(-2px); background: #ff5252; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+  .hero-blobs {
+    position: absolute;
+    top: 0; right: 0;
+    width: 520px; height: 520px;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.18;
+  }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .blob1 { width: 320px; height: 320px; background: var(--accent4); top: 60px; right: 60px; }
+  .blob2 { width: 220px; height: 220px; background: var(--accent5); top: 200px; right: 280px; }
+  .blob3 { width: 180px; height: 180px; background: var(--accent1); top: 310px; right: 50px; }
+
+  .sec-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+  .sec-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .about-text p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.9;
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--muted); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+  .skill-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-pill::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .skill-pill:hover {
+    border-color: rgba(255,255,255,0.18);
+    transform: translateY(-3px);
+    background: var(--surface2);
+  }
+  .sp-red::before { background: var(--accent1); }
+  .sp-yellow::before { background: var(--accent2); }
+  .sp-green::before { background: var(--accent3); }
+  .sp-blue::before { background: var(--accent4); }
+  .sp-purple::before { background: var(--accent5); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.25s;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .project-card:hover { transform: translateY(-5px); }
+  .project-card:hover::after { opacity: 1; }
+  .project-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 1.2rem;
+  }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .project-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 100px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent4);
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .project-link:hover { gap: 0.7rem; }
+
+  .edu-timeline { position: relative; }
+  .edu-timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent4), var(--accent5), transparent);
+    opacity: 0.4;
+  }
+  .edu-item {
+    display: flex;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    position: relative;
+  }
+  .edu-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  .edu-body { flex: 1; }
+  .edu-inst {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .edu-degree { font-size: 0.9rem; color: var(--muted); font-weight: 300; }
+  .edu-year {
+    font-size: 0.78rem;
+    color: var(--accent4);
+    font-weight: 500;
+    margin-top: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 200px;
+    background: radial-gradient(ellipse, rgba(77,150,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-wrapper h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.75rem;
+  }
+  .contact-wrapper p {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 400px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--surface2);
+    transition: all 0.2s;
+  }
+  .contact-link:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
+  .contact-link svg { width: 16px; height: 16px; }
+
+  footer {
+    text-align: center;
+    padding: 2rem 5%;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 300;
+  }
+
+  @media (max-width: 700px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-blobs { width: 300px; height: 300px; opacity: 0.1; }
+    nav .nav-links { display: none; }
+    .contact-wrapper { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#hero">Az<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div id="hero" style="position:relative; min-height:100vh; display:flex; align-items:center;">
+  <div class="hero-blobs">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-tag">Open to Internships</div>
+    <h1 class="hero-name">
+      <span class="line2">Azeem.</span>
+    </h1>
+    <p class="hero-desc">
+      3rd year CSE (AI/ML) student at GITAM — building real things with Python, ML, and a genuine curiosity for what's next in AI.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">See my work</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="sec-label">Who I am</div>
+  <div class="sec-title">Curious by nature,<br>builder by choice.</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a <strong>Computer Science student</strong> specialising in AI/ML at GITAM University, currently in my 3rd year. I have a strong foundation in mathematics and I love the challenge of turning ideas into working projects.</p>
+      <p>Right now I'm deep in <strong>Python, data structures, NLP, and ML</strong> — not just learning theory but building hands-on. I actively explore new AI tools and techniques to stay ahead of the curve.</p>
+      <p>I'm looking for an <strong>internship</strong> where I can contribute real value, solve real problems, and grow fast.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num" style="color: var(--accent1);">3rd</div>
+        <div class="stat-label">Year of CSE (AI/ML)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color: var(--accent2);">12+</div>
+        <div class="stat-label">Skills & Tools</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color: var(--accent3);">ML</div>
+        <div class="stat-label">Primary Focus</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color: var(--accent4);">Now</div>
+        <div class="stat-label">Seeking Internship</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sec-label">What I know</div>
+  <div class="sec-title">Skills & tools.</div>
+  <div class="skills-grid">
+    <div class="skill-pill sp-blue">Python</div>
+    <div class="skill-pill sp-yellow">Data Structures & Algorithms</div>
+    <div class="skill-pill sp-purple">Machine Learning</div>
+    <div class="skill-pill sp-green">Natural Language Processing</div>
+    <div class="skill-pill sp-blue">Data Analysis</div>
+    <div class="skill-pill sp-red">NumPy</div>
+    <div class="skill-pill sp-yellow">Pandas</div>
+    <div class="skill-pill sp-green">Git & GitHub</div>
+    <div class="skill-pill sp-purple">Web Scraping</div>
+    <div class="skill-pill sp-blue">API Integration</div>
+    <div class="skill-pill sp-red">Basic Statistics</div>
+    <div class="skill-pill sp-yellow">Prompt Engineering</div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="sec-label">What I've built</div>
+  <div class="sec-title">Projects.</div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-icon" style="background: rgba(77,150,255,0.12);">📈</div>
+      <div class="project-title">Sentiment-Based Stock Analyser</div>
+      <div class="project-desc">
+        A machine learning project that analyses news headlines and social media sentiment to predict stock price movement. Uses NLP techniques to extract signal from text and correlate it with market data.
+      </div>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">NLP</span>
+        <span class="project-tag">Machine Learning</span>
+        <span class="project-tag">Pandas</span>
+        <span class="project-tag">Sentiment Analysis</span>
+      </div>
+      <a href="https://github.com/Azeem35393" target="_blank" class="project-link">View on GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="sec-label">Where I've studied</div>
+  <div class="sec-title">Education.</div>
+  <div class="edu-timeline">
+    <div class="edu-item">
+      <div class="edu-dot">🎓</div>
+      <div class="edu-body">
+        <div class="edu-inst">GITAM University</div>
+        <div class="edu-degree">B.Tech — Computer Science & Engineering (AI/ML specialisation)</div>
+        <div class="edu-year">2022 – Present · 3rd Year</div>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-dot">📘</div>
+      <div class="edu-body">
+        <div class="edu-inst">Turito</div>
+        <div class="edu-degree">Intermediate (11th & 12th)</div>
+        <div class="edu-year">2020 – 2022</div>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-dot">🏫</div>
+      <div class="edu-body">
+        <div class="edu-inst">Scholars International School</div>
+        <div class="edu-degree">Schooling (up to 10th)</div>
+        <div class="edu-year">Completed 2020</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-wrapper">
+    <h2>Let's work together.</h2>
+    <p>I'm actively looking for internship opportunities. If you think I'd be a good fit, drop me a message.</p>
+    <div class="contact-links">
+      <a href="mailto:azeem35393@gmail.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        azeem35393@gmail.com
+      </a>
+      <a href="https://github.com/Azeem35393" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        GitHub
+      </a>
+      <a href="tel:+918885210623" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        +91 88852 10623
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with code & curiosity · Azeem · 2026
+</footer>
+
+</body>
+</html>
