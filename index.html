@@ -557,5 +557,136 @@
   Built with code & curiosity · Azeem · 2026
 </footer>
 
+<canvas id="starfield"></canvas>
+
+<style>
+  #starfield {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+(function() {
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+  const mouse = { x: -9999, y: -9999 };
+  const NUM_STARS = 280;
+  const REACT_RADIUS = 160;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function makeStar() {
+    // Vary brightness: dim (most), medium, bright (few)
+    const roll = Math.random();
+    let baseOpacity, size;
+    if (roll < 0.65) {
+      // Dim stars — majority
+      baseOpacity = Math.random() * 0.25 + 0.08;
+      size = Math.random() * 0.6 + 0.2;
+    } else if (roll < 0.90) {
+      // Medium stars
+      baseOpacity = Math.random() * 0.35 + 0.3;
+      size = Math.random() * 0.8 + 0.5;
+    } else {
+      // Bright stars — rare
+      baseOpacity = Math.random() * 0.3 + 0.6;
+      size = Math.random() * 0.7 + 1.0;
+    }
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      // Current rendered position (smoothly lerped)
+      rx: 0, ry: 0,
+      size,
+      baseOpacity,
+      opacity: baseOpacity,
+      twinkleOffset: Math.random() * Math.PI * 2,
+      twinkleSpeed: Math.random() * 0.008 + 0.002,
+      t: 0
+    };
+  }
+
+  function init() {
+    resize();
+    stars = Array.from({ length: NUM_STARS }, makeStar);
+    // Set initial rendered positions
+    stars.forEach(s => { s.rx = s.x; s.ry = s.y; });
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('touchmove', e => {
+    mouse.x = e.touches[0].clientX;
+    mouse.y = e.touches[0].clientY;
+  }, { passive: true });
+  window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    stars.forEach(s => {
+      s.t += s.twinkleSpeed;
+
+      // Target position: repel from cursor
+      const dx = s.x - mouse.x;
+      const dy = s.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      let targetX = s.x, targetY = s.y;
+
+      if (dist < REACT_RADIUS && dist > 0) {
+        const force = (1 - dist / REACT_RADIUS) * 55;
+        targetX = s.x + (dx / dist) * force;
+        targetY = s.y + (dy / dist) * force;
+      }
+
+      // Smooth lerp towards target (the "smooth movement")
+      s.rx += (targetX - s.rx) * 0.12;
+      s.ry += (targetY - s.ry) * 0.12;
+
+      // Twinkle: subtle opacity variation
+      const twinkle = Math.sin(s.t) * 0.12;
+      const alpha = Math.max(0, Math.min(1, s.baseOpacity + twinkle));
+
+      // Brighten slightly when near cursor
+      const brightBoost = dist < REACT_RADIUS ? (1 - dist / REACT_RADIUS) * 0.4 : 0;
+      const finalAlpha = Math.min(1, alpha + brightBoost);
+
+      // Draw the star dot
+      ctx.beginPath();
+      ctx.arc(s.rx, s.ry, s.size, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.globalAlpha = finalAlpha;
+      ctx.fill();
+
+      // Soft glow for brighter stars
+      if (s.size > 0.9) {
+        const glow = ctx.createRadialGradient(s.rx, s.ry, 0, s.rx, s.ry, s.size * 3);
+        glow.addColorStop(0, 'rgba(255,255,255,0.6)');
+        glow.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.beginPath();
+        ctx.arc(s.rx, s.ry, s.size * 3, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.globalAlpha = finalAlpha * 0.25;
+        ctx.fill();
+      }
+    });
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+})();
+</script>
+
 </body>
 </html>
